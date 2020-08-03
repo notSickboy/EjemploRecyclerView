@@ -9,14 +9,15 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(){
 
     var lista:RecyclerView? = null
-    var adaptador = null
+    var adaptador:AdaptadorCustom? = null
     var layoutManager:RecyclerView.LayoutManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var platillos = ArrayList<Platillo>()
+        val platillos = ArrayList<Platillo>()
+
         platillos.add(Platillo("Mole",250.0,4.5F, R.drawable.platillo01))
         platillos.add(Platillo("Empanadas",250.0,4.5F, R.drawable.platillo02))
         platillos.add(Platillo("Quepeque",250.0,4.5F, R.drawable.platillo03))
