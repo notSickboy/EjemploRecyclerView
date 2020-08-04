@@ -9,7 +9,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class AdaptadorCustom(var contexto:Context, items:ArrayList<Platillo>):RecyclerView.Adapter<AdaptadorCustom.ViewHolder>() {
+class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener):RecyclerView.Adapter<AdaptadorCustom.ViewHolder>() {
 
 
     var items:ArrayList<Platillo>? = null
@@ -20,8 +20,8 @@ class AdaptadorCustom(var contexto:Context, items:ArrayList<Platillo>):RecyclerV
 
     // Funcion que implementa el archivo .xml en la vista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdaptadorCustom.ViewHolder{
-        val vista = LayoutInflater.from(contexto).inflate(R.layout.template_platillo,parent, false)
-        val viewHolder = ViewHolder(vista)
+        val vista = LayoutInflater.from(parent?.context).inflate(R.layout.template_platillo,parent, false)
+        val viewHolder = ViewHolder(vista, listener)
 
         return viewHolder
     }
@@ -36,22 +36,29 @@ class AdaptadorCustom(var contexto:Context, items:ArrayList<Platillo>):RecyclerV
         val item = items?.get(position)
         holder.foto?.setImageResource(item?.foto!!)
         holder.nombre?.text = item?.nombre
-        holder.precio?.text = item?.precio.toString()
+        holder.precio?.text = "$" + item?.precio.toString()
         holder.rating?.rating = item?.rating!!
     }
 
-    class ViewHolder (vista:View):RecyclerView.ViewHolder(vista){
+    class ViewHolder (vista:View, listener:ClickListener):RecyclerView.ViewHolder(vista), View.OnClickListener{
         var vista = vista
         var foto:ImageView? = null
         var nombre:TextView? = null
         var precio:TextView? = null
         var rating:RatingBar? = null
+        var listener:ClickListener? = null
 
         init {
             foto = vista.findViewById(R.id.ivFoto)
             nombre = vista.findViewById(R.id.tvNombre)
             precio = vista.findViewById(R.id.tvPrecio)
             rating = vista.findViewById(R.id.tvRating)
+            this.listener = listener
+            vista.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            this.listener?.onClick(v!!, adapterPosition)
         }
     }
 
