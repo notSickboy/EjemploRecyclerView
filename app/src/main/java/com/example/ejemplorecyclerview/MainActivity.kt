@@ -45,6 +45,11 @@ class MainActivity : AppCompatActivity(){
                 Toast.makeText(applicationContext,platillos.get(index).nombre,Toast.LENGTH_SHORT).show()
             }
 
+        }, object: LongClickListener{
+            override fun longClick(vista: View, index: Int) {
+                Log.d("LONG", "Prueba")
+            }
+
         })
         lista?.adapter = adaptador
 
