@@ -2,10 +2,12 @@ package com.example.ejemplorecyclerview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(){
@@ -45,6 +47,16 @@ class MainActivity : AppCompatActivity(){
 
         })
         lista?.adapter = adaptador
+
+        // Accion refresh
+        val swipeToRefresh = findViewById<SwipeRefreshLayout>(R.id.swipeToRefresh)
+        swipeToRefresh.setOnRefreshListener {
+            for(i in 1..1000000000){
+            }
+            swipeToRefresh.isRefreshing = false
+            platillos.add(Platillo("Nuggets de poio",250.0,4.5F, R.drawable.platillo_01))
+            adaptador?.notifyDataSetChanged()
+        }
 
     }
 
