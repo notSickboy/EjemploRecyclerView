@@ -1,14 +1,14 @@
 package com.example.ejemplorecyclerview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(){
 
@@ -16,9 +16,12 @@ class MainActivity : AppCompatActivity(){
     var adaptador:AdaptadorCustom? = null
     var layoutManager:RecyclerView.LayoutManager? = null
 
+    var isActionMode = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         val platillos = ArrayList<Platillo>()
 
@@ -40,6 +43,31 @@ class MainActivity : AppCompatActivity(){
         layoutManager = LinearLayoutManager(this)
         lista?.layoutManager = layoutManager
 
+        val callback = object : androidx.appcompat.view.ActionMode.Callback{
+            override fun onActionItemClicked(mode: androidx.appcompat.view.ActionMode?, item: MenuItem?): Boolean {
+                adaptador?.terminarActionMode()
+                mode?.finish()
+                isActionMode = false
+                return true
+            }
+
+            override fun onCreateActionMode(mode: androidx.appcompat.view.ActionMode?, menu: Menu?): Boolean {
+                // Inicializar action mode
+                adaptador?.iniciarActionMode()
+                return true
+            }
+
+            override fun onPrepareActionMode(mode: androidx.appcompat.view.ActionMode?, menu: Menu?): Boolean {
+                return false
+            }
+
+            override fun onDestroyActionMode(mode: androidx.appcompat.view.ActionMode?) {
+                adaptador?.destruirActionMode()
+                isActionMode = false
+            }
+
+        }
+
         adaptador = AdaptadorCustom(platillos, object:ClickListener{
             override fun onClick(vista: View, index: Int) {
                 Toast.makeText(applicationContext,platillos.get(index).nombre,Toast.LENGTH_SHORT).show()
@@ -47,10 +75,16 @@ class MainActivity : AppCompatActivity(){
 
         }, object: LongClickListener{
             override fun longClick(vista: View, index: Int) {
-                Log.d("LONG", "Prueba")
+                if(!isActionMode){
+                    startSupportActionMode(callback)
+                    isActionMode = true
+                } else {
+                    // selecciono o deselecciono
+                }
             }
 
         })
+
         lista?.adapter = adaptador
 
         // Accion refresh

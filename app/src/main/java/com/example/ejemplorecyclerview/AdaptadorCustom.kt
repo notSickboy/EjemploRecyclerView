@@ -13,6 +13,7 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
 
 
     var items:ArrayList<Platillo>? = null
+    var multiSeleccion = false
 
     init {
         this.items = items
@@ -38,6 +39,20 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
         holder.nombre?.text = item?.nombre
         holder.precio?.text = "$" + item?.precio.toString()
         holder.rating?.rating = item?.rating!!
+    }
+
+    fun iniciarActionMode(){
+        multiSeleccion = true
+    }
+
+    fun destruirActionMode(){
+        multiSeleccion = false
+        notifyDataSetChanged()
+    }
+
+    fun terminarActionMode(){
+        // Eliminar elementos seleccionados
+        multiSeleccion = false
     }
 
     class ViewHolder (vista:View, listener:ClickListener, longClickListener: LongClickListener):RecyclerView.ViewHolder(vista), View.OnClickListener,View.OnLongClickListener{
