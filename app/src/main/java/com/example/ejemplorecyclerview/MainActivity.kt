@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
+import androidx.appcompat.view.ActionMode.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(){
 
         layoutManager = LinearLayoutManager(this)
         lista?.layoutManager = layoutManager
+
 
         val callback = object : androidx.appcompat.view.ActionMode.Callback{
             override fun onActionItemClicked(mode: androidx.appcompat.view.ActionMode?, item: MenuItem?): Boolean {
@@ -80,6 +83,7 @@ class MainActivity : AppCompatActivity(){
                     isActionMode = true
                 } else {
                     // selecciono o deselecciono
+                    adaptador?.seleccionarItem(index)
                 }
             }
 

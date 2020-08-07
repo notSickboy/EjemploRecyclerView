@@ -1,6 +1,7 @@
 package com.example.ejemplorecyclerview
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,16 +16,20 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
     var items:ArrayList<Platillo>? = null
     var multiSeleccion = false
 
+    var itemsSeleccionados:ArrayList<Int>? = null
+    var viewHolder:ViewHolder? = null
+
     init {
         this.items = items
+        itemsSeleccionados = ArrayList()
     }
 
     // Funcion que implementa el archivo .xml en la vista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdaptadorCustom.ViewHolder{
         val vista = LayoutInflater.from(parent?.context).inflate(R.layout.template_platillo,parent, false)
-        val viewHolder = ViewHolder(vista, listener, longClickListener)
+        viewHolder = ViewHolder(vista, listener, longClickListener)
 
-        return viewHolder
+        return viewHolder!!
     }
 
     // Funcion que cuenta los elementos de la vista
@@ -39,6 +44,12 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
         holder.nombre?.text = item?.nombre
         holder.precio?.text = "$" + item?.precio.toString()
         holder.rating?.rating = item?.rating!!
+
+        if(itemsSeleccionados?.contains(position)!!){
+            holder.vista.setBackgroundColor(Color.LTGRAY)
+        } else {
+            holder.vista.setBackgroundColor(Color.WHITE)
+        }
     }
 
     fun iniciarActionMode(){
@@ -47,12 +58,29 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
 
     fun destruirActionMode(){
         multiSeleccion = false
+        itemsSeleccionados?.clear()
         notifyDataSetChanged()
     }
 
     fun terminarActionMode(){
         // Eliminar elementos seleccionados
+        for(item in itemsSeleccionados!!){
+            itemsSeleccionados?.remove(item)
+        }
         multiSeleccion = false
+        notifyDataSetChanged()
+    }
+
+    fun seleccionarItem(index:Int){
+        if(multiSeleccion){
+            if(itemsSeleccionados?.contains(index)!!){
+                itemsSeleccionados?.remove(index)
+            } else {
+                itemsSeleccionados?.add(index)
+            }
+
+            notifyDataSetChanged()
+        }
     }
 
     class ViewHolder (vista:View, listener:ClickListener, longClickListener: LongClickListener):RecyclerView.ViewHolder(vista), View.OnClickListener,View.OnLongClickListener{
