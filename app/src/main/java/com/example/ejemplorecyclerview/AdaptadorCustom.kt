@@ -37,7 +37,7 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
         return items?.count()!!
     }
 
-    // dfsddfsdf
+    // Mapea los elementos graficos con los datos
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items?.get(position)
         holder.foto?.setImageResource(item?.foto!!)
