@@ -83,6 +83,11 @@ class AdaptadorCustom(items:ArrayList<Platillo>, var listener:ClickListener, var
         }
     }
 
+    fun contar_items_seleccionados_en_longclick():Int{
+        return itemsSeleccionados?.count()!!
+    }
+
+
     class ViewHolder (vista:View, listener:ClickListener, longClickListener: LongClickListener):RecyclerView.ViewHolder(vista), View.OnClickListener,View.OnLongClickListener{
         var vista = vista
         var foto:ImageView? = null
