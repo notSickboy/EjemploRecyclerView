@@ -48,7 +48,18 @@ class MainActivity : AppCompatActivity(){
 
 
         val callback = object : androidx.appcompat.view.ActionMode.Callback{
+
             override fun onActionItemClicked(mode: androidx.appcompat.view.ActionMode?, item: MenuItem?): Boolean {
+
+                when(item?.itemId){
+                    R.id.iEliminar ->{
+                        Toast.makeText(applicationContext, "Eliminar objetos", Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> {return true}
+
+                }
+
                 adaptador?.terminarActionMode()
                 mode?.finish()
                 isActionMode = false
