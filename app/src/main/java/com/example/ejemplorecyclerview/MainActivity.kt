@@ -54,6 +54,8 @@ class MainActivity : AppCompatActivity(){
                 when(item?.itemId){
                     R.id.iEliminar ->{
                         Toast.makeText(applicationContext, "Eliminar objetos", Toast.LENGTH_SHORT).show()
+                        adaptador?.eliminar_items_seleccionados()
+                        adaptador?.notifyDataSetChanged()
                     }
 
                     else -> {return true}
@@ -63,6 +65,7 @@ class MainActivity : AppCompatActivity(){
                 adaptador?.terminarActionMode()
                 mode?.finish()
                 isActionMode = false
+
                 return true
             }
 
